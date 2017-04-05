@@ -9,7 +9,7 @@ var __webdriver = require('selenium-webdriver'),
 	__by = require('selenium-webdriver').By,
 	__until = require('selenium-webdriver').until;
 var __Driver = new __webdriver.Builder()
-	.forBrowser('chrome')
+  .forBrowser('phantomjs')
 	.build();
 
 var __DEFAULT_IMG_WIDTH = '60%';

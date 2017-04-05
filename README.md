@@ -212,14 +212,15 @@ $ guide-automator -h
   Options:
 
 
-    -h, --help             output usage information
-    -V, --version          output the version number
+    -h, --help             Output usage information
+    -V, --version          Output the version number
     -i, --input <File.md>  Input .md file
     -o, --output <Folder>  Output destination folder
     -P, --pdf              Export manual to PDF, default is export for all types
     -H, --html             Export manual to HTML, default is export for all types
     -I, --image            Export ONLY manual's image and ignore others types, default is export for all types
     -s, --style <style.css>  Css style to be used in the manual or theme [lightBlue,lightOrange]
+    -t, --autosleep <Millisecond>  Time to sleep before screenshot
     -d, --debug              Show progress of code
 
   Examples:

@@ -37,7 +37,8 @@
     "selenium-webdriver": "3.3.0",
     "showdown": "^1.6.4",
     "vm2": "3.4.6",
-    "wkhtmltopdf": "^0.3.4"
+    "wkhtmltopdf": "^0.3.4",
+    "phantomjs": "2.1"
   },
   "engines": {
     "node": "~6.9.1",

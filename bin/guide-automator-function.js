@@ -15,17 +15,22 @@ var __DEFAULT_IMG_WIDTH = '60%';
 var __imgCount = 0;
 var __returnGuideAutomator = "";
 var __DefaultContext = true;
-var GDGLOBAL = {};
+var GDGLOBAL = {}
 
 var options = {
 	output: "",
-	outlineStyle: "solid red 3px",
+	outlineStyle: "solid blue 3px",
 	debug: false,
 	autosleep: 200,
 	browser: null,
 	headless: false,
-	window: null
+	window: null,
+	outlineOff: "solid blue 0px"
+
 };
+
+var listOfHighlights = [];
+
 
 var GD = {
 	get driver() {
@@ -81,6 +86,8 @@ var sandbox = {
 	takeScreenshot: takeScreenshot,
 	takeScreenshotOf: takeScreenshotOf,
 	highlight: highlight,
+	removeHighlight: removeHighlight,
+	removeAllHighlights: removeAllHighlights,
 	fillIn: fillIn,
 	submit: submit,
 	click: click,
@@ -145,6 +152,9 @@ function takeScreenshot(width) {
 	if (options.debug)
 		console.time("Screenshot " + localImageName);
 
+	/** Wait one second! */
+	GD.driver.sleep(1000);
+	
 	GD.driver.takeScreenshot().then(
 		function(image, err) {
 			if (err) {
@@ -160,12 +170,13 @@ function takeScreenshot(width) {
 			}
 		}
 	);
+	removeAllHighlights();
 	setReturn('![](' + __imgCount + '.png =' + width + 'x*)');
 
 }
 
 /**
- * Highlights an HTML element by adding a red outline.
+ * Highlights an HTML element by adding a blue outline.
  * @param  {string} cssSelector Element's CSS selector. It can also be an array of CSS selectors for multiple highlights.
  */
 function highlight(cssSelector) {
@@ -174,7 +185,11 @@ function highlight(cssSelector) {
 		cssSelectors = cssSelector;
 		cssSelector = cssSelectors[0];
 	}
+
+	listOfHighlights.push(cssSelector);
+
 	GD.driver.findElement(GD.by.css(cssSelector)).then(function(el) {
+
 		GD.driver.executeScript("arguments[0].style.outline = '" + options.outlineStyle + "'", el);
 		if (cssSelectors) {
 			cssSelectors.forEach(element => {
@@ -192,6 +207,49 @@ function highlight(cssSelector) {
 			});
 		}
 	}, ownFunctionException);
+}
+/**
+* Remove the highlight of an HTML element.
+* @param  {string} cssSelector Element's CSS selector. It can also be an array of CSS selectors for multiple highlights.
+* options.outlineOff : solid red 0 px
+ */
+function removeHighlight(cssSelector){
+	var cssSelectors;
+	if (cssSelector.constructor === Array) {
+		cssSelectors = cssSelector;
+		cssSelector = cssSelectors[0];
+	}
+	GD.driver.findElement(GD.by.css(cssSelector)).then(function(el) {
+		GD.driver.executeScript("arguments[0].style.outline = '" + options.outlineOff + "'", el);
+		if (cssSelectors) {
+			cssSelectors.forEach(element => {
+
+				if (element.constructor === Array) {
+					pageContext(element[1].toString());
+					element = element[0];
+				} else if (!__DefaultContext) {
+					pageContext();
+				}
+
+				GD.driver.findElement(GD.by.css(element)).then(function(el1) {
+					GD.driver.executeScript("arguments[0].style.outline = '" + options.outlineOff + "'", el1);
+				}, ownFunctionException);
+			});
+		}
+	}, ownFunctionException);
+}
+
+/**
+* Remove all the highlights of the screen.
+*
+*/
+
+function removeAllHighlights (){
+	for (selector of listOfHighlights){
+		removeHighlight(selector);
+	}
+	/** After all, clean the array */
+	listOfHighlights = [];
 }
 
 /**
@@ -216,6 +274,7 @@ function takeScreenshotOf(cssSelector, crop, outline, width) {
 	if (options.debug)
 		console.time("ScreenshotOF " + localImageName);
 
+
 	GD.driver.findElement(GD.by.css(cssSelector)).then(function(el) {
 		if (outline) {
 			GD.driver.executeScript("arguments[0].style.outline = '" + options.outlineStyle + "'", el);
@@ -238,6 +297,9 @@ function takeScreenshotOf(cssSelector, crop, outline, width) {
 		}
 		GD.driver.executeScript("arguments[0].scrollIntoView()", el);
 		GD.driver.executeScript("return arguments[0].getBoundingClientRect()", el).then(function(rect) {
+
+			/** Wait one second!  */
+			GD.driver.sleep(1000);
 			GD.driver.takeScreenshot().then(
 				function(image, err) {
 					if (outline) {
@@ -274,6 +336,7 @@ function takeScreenshotOf(cssSelector, crop, outline, width) {
 			);
 		});
 	}, ownFunctionException);
+	removeHighlight(cssSelector);
 	setReturn('![](' + __imgCount + '.png =' + width + 'x*)');
 
 }

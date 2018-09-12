@@ -108,7 +108,7 @@ if (!options.input) {
 }
 
 if (!fs.existsSync(options.input) || !fs.lstatSync(options.input).isFile()) {
-	console.log('Input não é arquivo');
+	console.log('Input is not a file');
 	process.exit();
 }
 if (!fs.lstatSync(options.output).isDirectory()) {

@@ -21,7 +21,7 @@ var options = {
 	output: "",
 	outlineStyle: "solid blue 3px",
 	debug: false,
-	autosleep: 200,
+	autosleep: 1000,
 	browser: null,
 	headless: false,
 	window: null,
@@ -151,9 +151,6 @@ function takeScreenshot(width) {
 	sleep(options.autosleep);
 	if (options.debug)
 		console.time("Screenshot " + localImageName);
-
-	/** Wait one second! */
-	GD.driver.sleep(1000);
 	
 	GD.driver.takeScreenshot().then(
 		function(image, err) {
@@ -299,7 +296,7 @@ function takeScreenshotOf(cssSelector, crop, outline, width) {
 		GD.driver.executeScript("return arguments[0].getBoundingClientRect()", el).then(function(rect) {
 
 			/** Wait one second!  */
-			GD.driver.sleep(1000);
+			sleep(options.autosleep);
 			GD.driver.takeScreenshot().then(
 				function(image, err) {
 					if (outline) {
@@ -336,7 +333,7 @@ function takeScreenshotOf(cssSelector, crop, outline, width) {
 			);
 		});
 	}, ownFunctionException);
-	removeHighlight(cssSelector);
+	removeAllHighlights();
 	setReturn('![](' + __imgCount + '.png =' + width + 'x*)');
 
 }

@@ -8,7 +8,7 @@ var options = {
 	debug: false,
 	input: "",
 	output: ".",
-	outlineStyle: "solid red 3px",
+	outlineStyle: "solid blue 3px",
 	html: false,
 	pdf: false,
 	/* If true, only image will be export */
@@ -17,10 +17,14 @@ var options = {
 	autosleep: 200,
 	browser: "",
 	headless: false,
-	window: ""
+	window: "",
+	outlineOff: "solid blue 0px"
 };
 var pjson = require('./package.json');
 var program = require('commander');
+
+var listOfHighlights = [];
+
 //-- Fim Variaveis ------------------
 
 //-- EXPORTS -------------
@@ -30,7 +34,7 @@ exports.defineOptions = function(arg) {
 		.forEach(function(key) {
 			options[key] = arg[key] || options[key];
 		});
-};
+};	
 exports.generateManual = function(text) {
 	if (!text)
 		throw "Text input is missing";

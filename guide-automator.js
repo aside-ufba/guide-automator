@@ -8,7 +8,7 @@ var options = {
 	debug: false,
 	input: "",
 	output: ".",
-	outlineStyle: "solid blue 3px",
+	outlineStyle: "solid red 3px",
 	html: false,
 	pdf: false,
 	/* If true, only image will be export */
@@ -18,7 +18,7 @@ var options = {
 	browser: "",
 	headless: false,
 	window: "",
-	outlineOff: "solid blue 0px"
+	outlineOff: "solid red 0px"
 };
 var pjson = require('./package.json');
 var program = require('commander');

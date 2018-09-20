@@ -19,13 +19,13 @@ var GDGLOBAL = {}
 
 var options = {
 	output: "",
-	outlineStyle: "solid blue 3px",
+	outlineStyle: "solid red 3px",
 	debug: false,
 	autosleep: 1000,
 	browser: null,
 	headless: false,
 	window: null,
-	outlineOff: "solid blue 0px"
+	outlineOff: "solid red 0px"
 
 };
 
